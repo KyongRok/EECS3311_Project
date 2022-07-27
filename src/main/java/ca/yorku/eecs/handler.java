@@ -6,6 +6,10 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -35,12 +39,32 @@ public class handler implements HttpHandler {
 	}
 	
 	public void PUThandler(HttpExchange request) throws IOException{
-		URI uri = request.getRequestURI();
-		String addActorURI = "http://localhost8080/api/v1/addActor";
-		String addMovieURI = "http://localhost8080/api/v1/addMovie";
-		String addRelationURI = "http://localhost8080/api/v1/addRelation";
+		String body = Utils.convert(request.getRequestBody());
 		
-		System.out.println("here");
+			
+			URI uri = request.getRequestURI();
+			String method = uri.getPath();
+			
+			if(method.equals("/api/v1/addActor")) {
+				System.out.println(body);
+				
+				sendString(request , "Yes" , 200);
+			}else if(method.equals("/api/v1/addMovie")) {
+				
+			}else if(method.equals("/api/v1/addRelation")) {
+				
+			}else {
+				String msg = "{msg : unimplemented method 501}";
+				sendString(request , msg , 501);
+				throw new IOException("unimplemented method 501\n" );
+			}
+			
+		
+		
+		 //"http://localhost8080/api/v1/addActor";
+		 //"http://localhost8080/api/v1/addMovie";
+		 //"http://localhost8080/api/v1/addRelation";
+		
 	}
 	
 	private void sendString(HttpExchange request, String data, int restCode) 
@@ -50,16 +74,6 @@ public class handler implements HttpHandler {
         os.write(data.getBytes());
         os.close();
 	}
-	
-	private static Map<String, String> splitQuery(String query) throws UnsupportedEncodingException {
-        Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-        String[] pairs = query.split("&");
-        for (String pair : pairs) {
-            int idx = pair.indexOf("=");
-            query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
-        }
-        return query_pairs;
-    }
 
 
 }

@@ -1,6 +1,7 @@
 package ca.yorku.eecs;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -38,7 +39,22 @@ public class handler implements HttpHandler {
 			try {
 				JSONObject jobj = new JSONObject(body);
 				URI uri = request.getRequestURI();
-				
+				String method = uri.getPath();
+				if(method.equals("/api/v1/getActor")) {
+					
+				}else if(method.equals("/api/v1/getMovie")) {
+					
+				}else if (method.equals("/api/v1/hasRelation")) {
+					
+				}else if(method.equals("/api/v1/computeBaconNumber")) {
+					
+				}else if(method.equals("/api/v1/computeBaconPath")) {
+					
+				}else {
+					String msg = "{\n	msg : unimplemented method 501\n}";
+					sendString(request , msg , 501);
+					throw new IOException("unimplemented method 501\n" );
+				}
 			} catch (JSONException e) {
 				
 				e.printStackTrace();
@@ -52,7 +68,7 @@ public class handler implements HttpHandler {
 		String body = Utils.convert(request.getRequestBody());
 			try {
 				JSONObject jobj = new JSONObject(body);
-				
+				System.out.println(jobj.toString());
 				
 				URI uri = request.getRequestURI();
 				String method = uri.getPath();
@@ -63,7 +79,7 @@ public class handler implements HttpHandler {
 					//System.out.println(actorId);
 					String name = jobj.getString("name");
 					String actorId = jobj.getString("actorId");
-					
+					 
 					
 					sendString(request , "Yes" , 200);
 				}else if(method.equals("/api/v1/addMovie")) {
@@ -76,7 +92,7 @@ public class handler implements HttpHandler {
 					
 					
 				}else {
-					String msg = "{msg : unimplemented method 501}";
+					String msg = "{\n	msg : unimplemented method 501\n}";
 					sendString(request , msg , 501);
 					throw new IOException("unimplemented method 501\n" );
 				}

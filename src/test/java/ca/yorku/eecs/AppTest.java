@@ -52,31 +52,26 @@ public class AppTest
    public void testAddActorPass() throws JSONException, IOException{
 	   
 
+	   JSONObject requestBody = new JSONObject();
+	   requestBody.put("name", "Kevin Bacon");
+	   requestBody.put("actorId", "1234");
 	   
-	   URI url = new URI("http://localhost:8080/api/v1/addActor");
+	   URL url = new URL("http://localhost:8080/api/v1/addActor");
 	   
-	   HttpURLConnection connector = (HttpURLConnection) url.openConnection();
 	   
-	   connector.addRequestProperty(getName(), getName())
+	   HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+	   connection.setDoOutput(true);
+	   connection.setRequestMethod("PUT");
+	   OutputStream outputStream = connection.getOutputStream();
+	   OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+       outputStreamWriter.write(requestBody);
+       outputStreamWriter.close();
+       outputStream.close();
+       connection.connect();
+       
+       int responseStatus = connection.getResponseCode();
 	   
-	   connector.setDoOutput(true);
-	   connector.setDoInput(true);
-	   connector.setRequestMethod("PUT");
-	   connector.connect();
-	   JSONObject json = new JSONObject();
-	   json.put("name", "Kevin Bacon");
-	   json.put("actorId", "1234");
-	   String name = json.getString("name");
-	   String actorId = json.getString("actorId");
-
-	   handler h = new handler();
-	   h.PUThandler(null)
-	   
-	 
-	   int result = connector.getResponseCode();
-
-	   
-	   assertEquals(200,result);
+	   assertEquals(200,responseStatus);
     }
    
  

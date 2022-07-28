@@ -70,7 +70,7 @@ public class AppTest
        connection.connect();
        
        int responseStatus = connection.getResponseCode();
-	   
+	   //test
 	   assertEquals(200,responseStatus);
     }
    

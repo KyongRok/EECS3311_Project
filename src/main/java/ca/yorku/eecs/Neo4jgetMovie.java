@@ -66,7 +66,6 @@ public class Neo4jgetMovie {
 				
 				ArrayList<String> list = new ArrayList<>();
 				while(result.hasNext()) {
-					
 					list.add(result.peek().get(0).asString());
 					result.next();
 				}

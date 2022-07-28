@@ -63,7 +63,6 @@ public class Neo4jgetActor {
 			try(Transaction tx = session.beginTransaction()){
 				StatementResult result = tx.run("MATCH((a:actor{id:$x})-[:ACTED_IN*1]->(m))\n"
 			    + "RETURN DISTINCT m.id", parameters("x", actorID));
-				
 				ArrayList<String> list = new ArrayList<>();
 				while(result.hasNext()) {
 					

@@ -77,6 +77,27 @@ public class handler implements HttpHandler {
 					try {
 						String actorId = jobj.getString("actorId");
 						String movieId = jobj.getString("movieId");
+						hasRelation hRel = new hasRelation();
+						boolean CheckMov = hRel.checkMovieExsist(movieId);
+						boolean CheckAct = hRel.checkActorExsist(actorId);
+						boolean Actor_Movie_Exists = CheckMov && CheckAct;
+						boolean hasRel = hRel.checkRelation(actorId, movieId);
+						String ans = "";
+						if(Actor_Movie_Exists) {
+							ans     += "{\n" + "	\"" + "actorId\" : \"" + actorId +"\",\n"
+									+ "	\"" + "movieId\" : \"" + movieId +"\",\n"
+									+ "	\"" + "hasRelationship\" : \"" + hasRel +"\"\n"
+									+ "}";
+							sendString(request , ans , 200);
+						}else if(!(CheckMov) && CheckAct) {
+							//movie does not exists
+							sendString(request , "Movie Not Found" , 404);
+							throw new IOException("Movie not found");
+						}else {
+							//actor does not exists
+							sendString(request , "Actor Not Found" , 404);
+							throw new IOException("Actor not found");
+						}
 					}catch(Exception e) {
 						sendString(request , "bad request" , 400);
 						throw new IOException("key does not exists");
@@ -84,6 +105,23 @@ public class handler implements HttpHandler {
 				}else if(method.equals("/api/v1/computeBaconNumber")) {
 					try {
 						String actorId = jobj.getString("actorId");
+						String kevin =  "nm0000102";
+						computeBaconNumber cbnum = new computeBaconNumber();
+						boolean checkactor = cbnum.checkActorExists(actorId);
+						
+						if(checkactor) {
+							String check_empty = "{\n" + "	\"BaconPath\": "+ "\n"+"}";
+							String ans = cbnum.computeBaconNumberResult(actorId, kevin);
+							if(check_empty.equals(ans)) {
+								sendString(request , "No path Exists",404);
+								throw new IOException("No path Exists");
+							}else {
+								sendString(request , ans , 200);
+							}
+						}else {
+							sendString(request , "Actor not found",404);
+							throw new IOException("Actor not found");
+						}
 					}catch(Exception e) {
 						sendString(request , "bad request" , 400);
 						throw new IOException("key does not exists");
@@ -91,6 +129,24 @@ public class handler implements HttpHandler {
 				}else if(method.equals("/api/v1/computeBaconPath")) {
 					try {
 						String actorId = jobj.getString("actorId");
+						System.out.println(actorId);
+						computeBaconPath cbpath = new computeBaconPath();
+						boolean checkactor = cbpath.checkActorExists(actorId);
+						String kevin =  "nm0000102";
+						if(checkactor) {
+							String check_empty = "{\n" + "	\"BaconPath\": [\n" + "	]\n" + "}";
+							String ans = cbpath.computeBaconPathResult(actorId , kevin);
+							if(ans.equals(check_empty)) {
+								sendString(request , "No path Exists",404);
+								throw new IOException("No path Exists");
+							}else {
+								sendString(request , ans , 200);
+							}
+						}else {
+							sendString(request,"Actor not found", 404);
+							throw new IOException("Actor not found");
+						}
+						
 					}catch(Exception e) {
 						sendString(request , "bad request" , 400);
 						throw new IOException("key does not exists");

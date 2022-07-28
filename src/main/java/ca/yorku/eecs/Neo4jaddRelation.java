@@ -25,12 +25,14 @@ public class Neo4jaddRelation {
        {
        	try (Transaction tx = session.beginTransaction()) {
        		StatementResult result = tx.run("MATCH (a:actor)\n" +
-       	 "WHERE a.actorId= $x\n" + "RETURN a.actorId as bool",parameters("x" , actorID) );
+       	 "WHERE a.id= $x\n" + "RETURN a.id as bool",parameters("x" , actorID) );
        		
        		if(result.hasNext()) {
        			return true;
+       			//has next is true, hence actor exists should work
        		}else {
        			return false;
+       			//does not have actor in the DB, hence should not work
        		}
        		
        	}
@@ -41,13 +43,13 @@ public class Neo4jaddRelation {
       {
       	try (Transaction tx = session.beginTransaction()) {
       		StatementResult result = tx.run("MATCH (m:movie)\n" +
-      	 "WHERE m.movieId= $x\n" + "RETURN m.movieId as bool",parameters("x" , movieID) );
+      	 "WHERE m.id= $x\n" + "RETURN m.id as bool",parameters("x" , movieID) );
       		
       		if(result.hasNext()) {
-      		
+      		//has next is true, there is movie with matching id
       			return true;
       		}else {
-      			
+      			// has next is false, there isn't movie with matching id
       			return false;
       		}
       		
@@ -61,15 +63,15 @@ public class Neo4jaddRelation {
 	      	try (Transaction tx = session.beginTransaction()) {
 	      		StatementResult result = tx.run(
 	      				"MATCH p = (a)-[:ACTED_IN]->(m)\n"+
-	      				"WHERE a.actorId=$x AND m.movieId=$y\n"+
+	      				"WHERE a.id=$x AND m.id=$y\n"+
 	      				"RETURN p"
 						,parameters("x", actorID, "y", movieID) );
-	      		//"RETURN EXISTS( (:actor {actorID: $x})-[:ACTED_IN]->(:movie {movieID: $y}) ) as bool"
+	      		
 	      		if(result.hasNext()) {
-	      			
+	      			//there is relation existing
 	      			return true;
 	      		}else {
-	      			
+	      			//there is no relation existing
 	      			return false;
 	      		}
 	      		
@@ -81,7 +83,7 @@ public class Neo4jaddRelation {
 		
 		try (Session session = driver.session()){
 			session.writeTransaction(tx -> tx.run("MATCH (a:actor) , (m:movie)\n"+
-		"WHERE a.actorId=$x AND m.movieId=$y\n"
+		"WHERE a.id=$x AND m.id=$y\n"
 					+ "CREATE (a)-[r:ACTED_IN]->(m)\n" +"RETURN type(r)",
 					parameters("x" , actorID , "y" , movieID)) );
 			

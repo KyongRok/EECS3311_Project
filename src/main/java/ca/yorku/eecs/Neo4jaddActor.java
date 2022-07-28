@@ -31,13 +31,17 @@ public class Neo4jaddActor {
        {
        	try (Transaction tx = session.beginTransaction()) {
        		StatementResult result = tx.run("MATCH (a:actor)\n" +
-       	 "WHERE a.actorId= $y\n" + "RETURN a.actorId as bool",parameters("x" , name
+       	 "WHERE a.id= $y\n" + "RETURN a.id as bool",parameters("x" , name
        			 , "y" , actorID) );
        		
        		if(result.hasNext()) {
        			return false;
+       			//has next, meaning there is already actor , hence return false aka
+       			//should fail, hence choosed false
        		}else {
        			return true;
+       			//does not has next, meaning there is no actor with this Id, hence return true
+       			//aka should success, hence choose true
        		}
        		
        	}
@@ -47,7 +51,7 @@ public class Neo4jaddActor {
 	public void addActor(String name , String actorID) {
 		
 		try (Session session = driver.session()){
-			session.writeTransaction(tx -> tx.run("CREATE (a:actor {name: $x , actorId: $y})", 
+			session.writeTransaction(tx -> tx.run("CREATE (a:actor {name: $x , id: $y})", 
 					parameters("x", name , "y" , actorID)));
 			session.close();
 		}

@@ -41,15 +41,60 @@ public class handler implements HttpHandler {
 				URI uri = request.getRequestURI();
 				String method = uri.getPath();
 				if(method.equals("/api/v1/getActor")) {
-					
+					try {
+						String actorId = jobj.getString("actorId");
+						getActor gact = new getActor();
+						boolean checkAct = gact.checkActorExsist(actorId);
+						if(checkAct) {
+							String ans = gact.getact(actorId);
+							sendString(request ,ans , 200);
+						}else {
+							sendString(request , "actor not found" , 404);
+							throw new IOException("actor does not exists");
+						}
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
 				}else if(method.equals("/api/v1/getMovie")) {
-					
+					try {
+						String movieId = jobj.getString("movieId");
+						getMovie gmov = new getMovie();
+						boolean checkMov = gmov.checkMovieExsist(movieId);
+						
+						if(checkMov) {
+							String ans = gmov.getmov(movieId);
+							sendString(request , ans , 200);
+						}else {
+							sendString(request , "movie not found" , 404);
+							throw new IOException("movie does not exists");
+						}
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
 				}else if (method.equals("/api/v1/hasRelation")) {
-					
+					try {
+						String actorId = jobj.getString("actorId");
+						String movieId = jobj.getString("movieId");
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
 				}else if(method.equals("/api/v1/computeBaconNumber")) {
-					
+					try {
+						String actorId = jobj.getString("actorId");
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
 				}else if(method.equals("/api/v1/computeBaconPath")) {
-					
+					try {
+						String actorId = jobj.getString("actorId");
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
 				}else {
 					String msg = "{\n	msg : unimplemented method 501\n}";
 					sendString(request , msg , 501);
@@ -153,12 +198,7 @@ public class handler implements HttpHandler {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-		
-			
-		 //"http://localhost8080/api/v1/addActor";
-		 //"http://localhost8080/api/v1/addMovie";
-		 //"http://localhost8080/api/v1/addRelation";
-		
+
 	}
 	
 	private void sendString(HttpExchange request, String data, int restCode) 

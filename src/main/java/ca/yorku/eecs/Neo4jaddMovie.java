@@ -30,13 +30,15 @@ public class Neo4jaddMovie {
        {
        	try (Transaction tx = session.beginTransaction()) {
        		StatementResult result = tx.run("MATCH (m:movie)\n" +
-       	 "WHERE m.movieId= $y\n" + "RETURN m.movieId as bool",parameters("y" , MovieId) );
+       	 "WHERE m.id= $y\n" + "RETURN m.id as bool",parameters("y" , MovieId) );
        		session.close();
        		
        		if(result.hasNext()) {
        			return false;
+       			//does have next, hence there is duplicate , hence should fail
        		}else {
        			return true;
+       			//does not have duplicate hence should work
        		}
        		
        	}
@@ -46,7 +48,7 @@ public class Neo4jaddMovie {
 	public void addMovie(String name , String MovieId) {
 		
 		try (Session session = driver.session()){
-			session.writeTransaction(tx -> tx.run("CREATE (m:movie {name: $x , movieId: $y})", 
+			session.writeTransaction(tx -> tx.run("CREATE (m:movie {name: $x , id: $y})", 
 					parameters("x", name , "y" , MovieId)));
 			session.close();
 		}

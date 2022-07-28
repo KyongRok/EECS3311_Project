@@ -1,5 +1,4 @@
 package ca.yorku.eecs;
-
 import static org.neo4j.driver.v1.Values.parameters;
 
 import java.io.IOException;
@@ -15,24 +14,24 @@ import org.neo4j.driver.v1.Transaction;
 
 import com.sun.net.httpserver.HttpExchange;
 
-//adding actor
-public class Neo4jaddActor {
+
+public class Neo4jaddMovie {
 	private Driver driver;
 	private String uriDb;
 	
-	public Neo4jaddActor() {
+	public Neo4jaddMovie() {
 		uriDb = "bolt://localhost:7687";
 		Config config = Config.builder().withoutEncryption().build();
 		driver = GraphDatabase.driver(uriDb, AuthTokens.basic("neo4j","1234"), config);
 	}
 	
-	public boolean checkActorDuplicate(String name , String actorID) {
+	public boolean checkMovieDuplicate(String MovieId) {
 		 try (Session session = driver.session())
        {
        	try (Transaction tx = session.beginTransaction()) {
-       		StatementResult result = tx.run("MATCH (a:actor)\n" +
-       	 "WHERE a.actorId= $y\n" + "RETURN a.actorId as bool",parameters("x" , name
-       			 , "y" , actorID) );
+       		StatementResult result = tx.run("MATCH (m:movie)\n" +
+       	 "WHERE m.movieId= $y\n" + "RETURN m.movieId as bool",parameters("y" , MovieId) );
+       		session.close();
        		
        		if(result.hasNext()) {
        			return false;
@@ -44,11 +43,11 @@ public class Neo4jaddActor {
        }
 	}
 	
-	public void addActor(String name , String actorID) {
+	public void addMovie(String name , String MovieId) {
 		
 		try (Session session = driver.session()){
-			session.writeTransaction(tx -> tx.run("CREATE (a:actor {name: $x , actorId: $y})", 
-					parameters("x", name , "y" , actorID)));
+			session.writeTransaction(tx -> tx.run("CREATE (m:movie {name: $x , movieId: $y})", 
+					parameters("x", name , "y" , MovieId)));
 			session.close();
 		}
 	}

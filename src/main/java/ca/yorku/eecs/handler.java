@@ -96,12 +96,52 @@ public class handler implements HttpHandler {
 					}
 					
 				}else if(method.equals("/api/v1/addMovie")) {
-					String name = jobj.getString("name");
-					String movieId = jobj.getString("movieId");
+					try {
+						String name = jobj.getString("name");
+						String movieId = jobj.getString("movieId");
+						addMovie m = new addMovie();
+						boolean addMovie_Flag = m.addmov(name, movieId);
+						String response = "";
+						if(addMovie_Flag) {
+							response +=   "{\n" + "	\"name\" : " +"\"" + name +"\" , \n"
+            						+"	\"movieId\" : " + "\"" +movieId +"\n}";
+							sendString(request , response , 200);
+						}else {
+							response += "{msg : movie already exists}";
+							sendString(request , response , 400);
+						}
+						
+					}catch(Exception e){
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
+					
 					
 				}else if(method.equals("/api/v1/addRelation")) {
-					String actorId = jobj.getString("actorId");
-					String movieId = jobj.getString("movieId");
+					try {
+						String actorId = jobj.getString("actorId");
+						String movieId = jobj.getString("movieId");
+						addRelation r = new addRelation();
+						int addRelation_flag = r.addRel(movieId, actorId);
+						String response = "";
+						if(addRelation_flag == 1) {
+							response +=   "{\n" + "	\"actorId\" : " +"\"" + actorId +"\" , \n"
+            						+"	\"movieId\" : " + "\"" +movieId +"\n}";
+							sendString(request , response , 200);
+						}else if(addRelation_flag == 2) {
+							response += "Relation already exists";
+							sendString(request , response , 400);
+						}else if(addRelation_flag == 3) {
+							response += "actor not found";
+							sendString(request , response, 404);
+						}else {
+							response += "movie not found";
+							sendString(request , response, 404);
+						}
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
 					
 					
 				}else {

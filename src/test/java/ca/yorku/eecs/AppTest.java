@@ -1,5 +1,17 @@
 package ca.yorku.eecs;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -35,4 +47,38 @@ public class AppTest
     {
         assertTrue( true );
     }
+    
+
+   public void testAddActorPass() throws JSONException, IOException{
+	   
+
+	   
+	   URI url = new URI("http://localhost:8080/api/v1/addActor");
+	   
+	   HttpURLConnection connector = (HttpURLConnection) url.openConnection();
+	   
+	   connector.addRequestProperty(getName(), getName())
+	   
+	   connector.setDoOutput(true);
+	   connector.setDoInput(true);
+	   connector.setRequestMethod("PUT");
+	   connector.connect();
+	   JSONObject json = new JSONObject();
+	   json.put("name", "Kevin Bacon");
+	   json.put("actorId", "1234");
+	   String name = json.getString("name");
+	   String actorId = json.getString("actorId");
+
+	   handler h = new handler();
+	   h.PUThandler(null)
+	   
+	 
+	   int result = connector.getResponseCode();
+
+	   
+	   assertEquals(200,result);
+    }
+   
+ 
+   
 }

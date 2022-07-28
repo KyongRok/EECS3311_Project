@@ -74,14 +74,27 @@ public class handler implements HttpHandler {
 				String method = uri.getPath();
 				
 				if(method.equals("/api/v1/addActor")) {
+					try {
+						String name = jobj.getString("name");
+						String actorId = jobj.getString("actorId");
+						addActor a = new addActor();
+						boolean addActor_Flag = a.addAct(name, actorId);
+						String response = "";
+						if((addActor_Flag)) {
+							response +=   "{\n" + "	\"name\" : " +"\"" + name +"\" , \n"
+            						+"	\"actorId\" : " + "\"" +actorId +"\n}";
+							sendString(request , response , 200);
+						}else {
+							response += "{msg : actor already exists}";
+							sendString(request , response , 400);
+							
+						}
+						
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
 					
-					//String actorId = jobj.getString("actorId");
-					//System.out.println(actorId);
-					String name = jobj.getString("name");
-					String actorId = jobj.getString("actorId");
-					 
-					
-					sendString(request , "Yes" , 200);
 				}else if(method.equals("/api/v1/addMovie")) {
 					String name = jobj.getString("name");
 					String movieId = jobj.getString("movieId");

@@ -64,10 +64,11 @@ public class AppTest
 	   connection.setRequestMethod("PUT");
 	   OutputStream outputStream = connection.getOutputStream();
 	   OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-       outputStreamWriter.write(requestBody);
+       outputStreamWriter.write(requestBody.toString());
        outputStreamWriter.close();
        outputStream.close();
        connection.connect();
+       System.out.println(connection.getResponseCode());
        
        int responseStatus = connection.getResponseCode();
 	   //test

@@ -23,7 +23,7 @@ public class Neo4jaddActor {
 	public Neo4jaddActor() {
 		uriDb = "bolt://localhost:7687";
 		Config config = Config.builder().withoutEncryption().build();
-		driver = GraphDatabase.driver(uriDb, AuthTokens.basic("neo4j","1234"), config);
+		driver = GraphDatabase.driver(uriDb, AuthTokens.basic("neo4j","123456"), config);
 	}
 	
 	public boolean checkActorDuplicate(String name , String actorID) {

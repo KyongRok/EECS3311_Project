@@ -19,7 +19,7 @@ public class computeBaconNumber {
 	
 	public String computeBaconNumberResult(String actorId , String kevin) {
 		
-		String ans = "{\n" + "	\"BaconPath\": ";
+		String ans = "{\n" + "	\"BaconNumber\": ";
 		if(actorId.equals(kevin)) {
 			ans += "0\n";
 		}else {

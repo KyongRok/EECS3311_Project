@@ -19,7 +19,7 @@ public class Neo4jcomputeBaconPath {
 	public Neo4jcomputeBaconPath(){
 		uriDb = "bolt://localhost:7687";
 		Config config = Config.builder().withoutEncryption().build();
-		driver = GraphDatabase.driver(uriDb, AuthTokens.basic("neo4j","1234"), config);
+		driver = GraphDatabase.driver(uriDb, AuthTokens.basic("neo4j","123456"), config);
 	}
 	
 	public boolean checkActor(String actorId) {

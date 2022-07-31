@@ -110,7 +110,7 @@ public class handler implements HttpHandler {
 						boolean checkactor = cbnum.checkActorExists(actorId);
 						
 						if(checkactor) {
-							String check_empty = "{\n" + "	\"BaconPath\": "+ "\n"+"}";
+							String check_empty = "{\n" + "	\"BaconNumber\": "+ "\n"+"}";
 							String ans = cbnum.computeBaconNumberResult(actorId, kevin);
 							if(check_empty.equals(ans)) {
 								sendString(request , "No path Exists",404);

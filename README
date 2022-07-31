@@ -80,7 +80,7 @@ additional endpoints:
 	
 *********************TESTER CODE README******************************************
 
-The test case file can be found under the src -> test folder, with the file name testCases.robot
+The test case file can be found under the EECS3311_Project directory, with the file name testCases.robot
 
 When running the test cases, we are assuming that the Node Kevin Bacon has already been created, 
 with the name=Kevin Bacon and actorId=nm0000102

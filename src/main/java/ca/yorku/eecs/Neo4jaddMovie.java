@@ -51,6 +51,7 @@ public class Neo4jaddMovie {
 			session.writeTransaction(tx -> tx.run("CREATE (m:movie {name: $x , id: $y , cannesAwardWon:$z})", 
 					parameters("x", name , "y" , MovieId , "z" , 0)));
 			session.close();
+			
 		}
 	}
 

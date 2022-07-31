@@ -1,0 +1,82 @@
+README.txt Group AI EECS3101 S22 YORK UNIVERSITY.
+GROUP MEMBERS:
+KyongRok Kim 215813413
+Tommy
+
+additional endpoints:
+1. /api/v1/wonOscar  Method type = PUT
+	example JSON body
+	{
+		"actorId" : "1234" ,
+		"numberOfOscars" : 5
+	
+	}
+	when addActor endpoint is provoked, we added additional property to node other than
+	id , name called numberOfOscars with type int
+	
+	updates numberOfOscars property of actor in the DB.
+	404 error when actorId not found.
+	400 if wrong key/bad formmating of input
+
+2. /api/v1/wonCannesAward   Method type = PUT
+	example JSON body
+	{
+		"movieId" : "1234" , 
+		"cannesAwardWon" : 5
+	}
+	when addMovie endpoint is proved, we added additional property to node other than
+	id, name called cannesAwardWon with type int
+	
+	updates cannesAwardWon property of movie in the DB.
+	404 error when movieId not found
+	400 if wrong key/bad formmating of input
+	
+3./api/v1/addPersonalRelation   Method type = PUT
+	example JSON body
+	{
+		"actorId1" : "1234" , 
+		"actorId2" : "9876"
+	
+	}
+	the input for this endpoint is made into actorId1, actorId2 because we cannot have
+	same key 2 times as input but we had to get 2 actorId hence had to modify the input key
+	
+	adds relation PERSONAL_RELATION for both actors, for example, 
+	Bruce Lee -> Kevin Bacon	
+	Kevin Bacon -> Bruce Lee
+	when this endpoint is called.
+	edge case, when trying to add Personal relation for 2 actors that already has, it will
+	return 400 code with message saying relation already exists.
+	
+4. /api/v1/displayOscar  Method type = GET
+	example JSON body
+	{
+		"actorId" : "1234"
+	}
+	
+	displays actors name, id and the number of oscars won by this actor
+	404 when actor with input id does not exists. no edge case since actor node is created with
+	wonOscar property set as 0 as default. will display 0 if has not won any.
+	
+5. /api/v1/displayCannes  Method type = GET
+	exmaple JSON body
+	{
+		"movieId" : "1234"
+	}
+	
+	displays movie name , id and number of cannes won by this movie
+	404 when movie with input id does not exists. no edge case since movie node is created with
+	wonCannes property set as 0 as default. will display 0 if has not won any.
+	
+6. /api/v1/getPersonalRelation  Method type = GET
+	exmaple JSON body
+	{
+		"actorId" : "1234"
+	}
+	
+	displays list of actors that has personal relation with input actor.
+	404 when actor with input id is not found in the DB.
+	edge case when he has no personal relation, it will return empty list.
+	
+*********************TESTER CODE README******************************************
+

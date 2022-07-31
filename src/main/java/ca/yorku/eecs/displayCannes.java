@@ -9,6 +9,7 @@ public class displayCannes {
 	public boolean check_movie(String movieId) {
 		Neo4jdisplayCannes dbdcannes = new Neo4jdisplayCannes();
 		boolean check_mov = dbdcannes.checkmovieID(movieId);
+		//check if movie exists from DB
 		if(check_mov) {
 			return true;
 		}else {

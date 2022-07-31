@@ -22,7 +22,7 @@ public class computeBaconPath {
 		String ans = "{\n" + "	\"BaconPath\": [\n";
 		if(actorId.equals(kevin)) {
 			ans += "		\"" + kevin + "\"\n";
-			
+			//when input is kevin himself
 		}else {
 			Neo4jcomputeBaconPath dbcbaconpath = new Neo4jcomputeBaconPath();
 			ArrayList<String> list = dbcbaconpath.computeBaconPath(actorId , kevin);
@@ -32,7 +32,7 @@ public class computeBaconPath {
 				}else {
 					ans += "		" + list.get(i)+ ",\n";
 				}
-					
+					//string builder
 			}
 		}
 		

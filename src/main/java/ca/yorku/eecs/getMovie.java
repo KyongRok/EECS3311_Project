@@ -24,7 +24,7 @@ public class getMovie {
 		String ans = "{\n" + "\"movieId\": \"" + movieId +"\", \n" 
 				+ "\"name\": \"" + moviename +"\", \n" 
 				+"\"actors\": [\n";
-		
+		//return type of dbGetMovie.getMovie_actors is arraylist
 		for(int i = 0; i < list.size(); i++) {
 			if(i == list.size() -1) {
 				ans += "		\"" + list.get(i) +"\"\n";

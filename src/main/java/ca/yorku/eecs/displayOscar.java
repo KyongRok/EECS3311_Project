@@ -9,6 +9,7 @@ public class displayOscar {
 	public boolean check_actor(String actorId) {
 		Neo4jdisplayOscar dbdoscar = new Neo4jdisplayOscar();
 		boolean check_act = dbdoscar.checkActorID(actorId);
+		//check is actor exists
 		if(check_act) {
 			return true;
 		}else {

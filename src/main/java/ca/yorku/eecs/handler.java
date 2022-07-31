@@ -129,7 +129,6 @@ public class handler implements HttpHandler {
 				}else if(method.equals("/api/v1/computeBaconPath")) {
 					try {
 						String actorId = jobj.getString("actorId");
-						System.out.println(actorId);
 						computeBaconPath cbpath = new computeBaconPath();
 						boolean checkactor = cbpath.checkActorExists(actorId);
 						String kevin =  "nm0000102";
@@ -151,7 +150,66 @@ public class handler implements HttpHandler {
 						sendString(request , "bad request" , 400);
 						throw new IOException("key does not exists");
 					}
-				}else {
+				}else if(method.equals("/api/v1/displayOscar")) {
+					try {
+						String actorId = jobj.getString("actorId");
+						displayOscar doscar = new displayOscar();
+						boolean check_actor = doscar.check_actor(actorId);
+						if(check_actor) {
+							String name = doscar.getActorInfo(actorId);
+							int number = doscar.getOscarNumber(actorId);
+							String response = "{\n	" + "\"actorId\": " + "\""+actorId+ "\"\n"
+									+ "	\"name\": " + "\"" + name+"\"\n"
+									+ "	\"numberOfOscars\": " + number +"\n}";
+							sendString(request , response , 200);
+						}else {
+							sendString(request,"Actor not found", 404);
+							throw new IOException("Actor not found");
+						}
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
+					
+				}else if(method.equals("/api/v1/displayCannes")) {
+					try {
+						String movieId = jobj.getString("movieId");
+						displayCannes dcannes = new displayCannes();
+						boolean check_movie = dcannes.check_movie(movieId);
+						if(check_movie) {
+							String name = dcannes.getmovieInfo(movieId);
+							int number = dcannes.getCannesNumber(movieId);
+							String response = "{\n	" + "\"movieId\": " + "\""+movieId+ "\"\n"
+									+ "	\"name\": " + "\"" + name+"\"\n"
+									+ "	\"cannesAwardWon\": " + number +"\n}";
+							sendString(request , response , 200);
+						}else {
+							sendString(request,"movie not found", 404);
+							throw new IOException("movie not found");
+						}
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
+					
+				}else if(method.equals("/api/v1/getPersonalRelation")) {
+					try {
+						String actorId = jobj.getString("actorId");
+						getPersonalRelation gPRel = new getPersonalRelation();
+						boolean check_actor = gPRel.checkActorExsist(actorId);
+						if(check_actor) {
+							String ans = gPRel.getP_Relation(actorId);
+							sendString(request , ans , 200);
+						}else {
+							sendString(request,"actor not found", 404);
+							throw new IOException("actor not found");
+						}
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
+				}
+				else {
 					String msg = "{\n	msg : unimplemented method 501\n}";
 					sendString(request , msg , 501);
 					throw new IOException("unimplemented method 501\n" );
@@ -245,7 +303,70 @@ public class handler implements HttpHandler {
 					}
 					
 					
-				}else {
+				}else if(method.equals("/api/v1/wonOscar")) {
+					try {
+						String actorId = jobj.getString("actorId");
+						int number = jobj.getInt("numberOfOscars");
+						wonOscar wOscar = new wonOscar();
+						boolean success = wOscar.setOscarNumber(actorId, number);
+						String response = "";
+						if(success) {
+							response += "{\n	\"actorId\": " + "\""+actorId+"\"" + "\n"+
+									"	\"numberOfOscar\": " + "\"" + number+"\"" +"\n}" ;
+							sendString(request , response , 200);
+						}else {
+							response += "actor not found";
+							sendString(request , response, 404);
+						}
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
+					
+				}else if(method.equals("/api/v1/wonCannesAward")) {
+					try {
+						String movieId = jobj.getString("movieId");
+						int number = jobj.getInt("cannesAwardWon");
+						wonCannesAward wCannesAward = new wonCannesAward();
+						boolean success = wCannesAward.setCannesWon(movieId, number);
+						String response = "";
+						if(success) {
+							response += "{\n	\"movieId\": " + "\""+movieId+"\"" + "\n"+
+									"	\"cannesAwardWon\": " + "\"" + number+"\"" +"\n}" ;
+							sendString(request , response , 200);
+						}else {
+							response += "movie not found";
+							sendString(request , response, 404);
+						}
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
+					
+				}else if(method.equals("/api/v1/addPersonalRelation")) {
+					try {
+						String actor1Id = jobj.getString("actorId1");
+						String actor2Id = jobj.getString("actorId2");
+						addPersonalRelation r = new addPersonalRelation();
+						int addRelation_flag = r.addPersonalRel(actor1Id, actor2Id);
+						String response = "";
+						if(addRelation_flag == 1) {
+							response +=   "{\n" + "	\"actorId\" : " +"\"" + actor1Id +"\" , \n"
+            						+"	\"actorId\" : " + "\"" +actor2Id +"\n}";
+							sendString(request , response , 200);
+						}else if(addRelation_flag == 2) {
+							response += "Relation already exists";
+							sendString(request , response , 400);
+						}else{
+							response += "actor not found";
+							sendString(request , response, 404);
+						}
+					}catch(Exception e) {
+						sendString(request , "bad request" , 400);
+						throw new IOException("key does not exists");
+					}
+				}
+				else {
 					String msg = "{\n	msg : unimplemented method 501\n}";
 					sendString(request , msg , 501);
 					throw new IOException("unimplemented method 501\n" );

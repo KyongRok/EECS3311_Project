@@ -48,8 +48,8 @@ public class Neo4jaddMovie {
 	public void addMovie(String name , String MovieId) {
 		
 		try (Session session = driver.session()){
-			session.writeTransaction(tx -> tx.run("CREATE (m:movie {name: $x , id: $y})", 
-					parameters("x", name , "y" , MovieId)));
+			session.writeTransaction(tx -> tx.run("CREATE (m:movie {name: $x , id: $y , cannesAwardWon:$z})", 
+					parameters("x", name , "y" , MovieId , "z" , 0)));
 			session.close();
 		}
 	}

@@ -51,8 +51,8 @@ public class Neo4jaddActor {
 	public void addActor(String name , String actorID) {
 		
 		try (Session session = driver.session()){
-			session.writeTransaction(tx -> tx.run("CREATE (a:actor {name: $x , id: $y})", 
-					parameters("x", name , "y" , actorID)));
+			session.writeTransaction(tx -> tx.run("CREATE (a:actor {name: $x , id: $y, numberOfOscars: $z})", 
+					parameters("x", name , "y" , actorID , "z" , 0)));
 			session.close();
 		}
 	}

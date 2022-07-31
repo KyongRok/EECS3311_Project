@@ -48,33 +48,4 @@ public class AppTest
         assertTrue( true );
     }
     
-
-   public void testAddActorPass() throws JSONException, IOException{
-	   
-
-	   JSONObject requestBody = new JSONObject();
-	   requestBody.put("name", "Kevin Bacon");
-	   requestBody.put("actorId", "1234");
-	   
-	   URL url = new URL("http://localhost:8080/api/v1/addActor");
-	   
-	   
-	   HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-	   connection.setDoOutput(true);
-	   connection.setRequestMethod("PUT");
-	   OutputStream outputStream = connection.getOutputStream();
-	   OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-       outputStreamWriter.write(requestBody.toString());
-       outputStreamWriter.close();
-       outputStream.close();
-       connection.connect();
-       System.out.println(connection.getResponseCode());
-       
-       int responseStatus = connection.getResponseCode();
-	   //test
-	   assertEquals(200,responseStatus);
-    }
-   
- 
-   
 }
